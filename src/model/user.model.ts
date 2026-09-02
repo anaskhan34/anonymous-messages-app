@@ -16,3 +16,5 @@ export const messagesSchema: Schema<Message> = new Schema({
     default: Date.now,
   },
 });
+
+// now is next step
