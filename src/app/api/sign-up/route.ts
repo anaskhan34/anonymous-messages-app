@@ -27,16 +27,26 @@ export async function POST(request: Request) {
     const existingUserVerifiedByEmail = await UserModel.findOne({
       email,
     });
-    const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
+    let verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
 
     if (existingUserVerifiedByEmail) {
-      return Response.json(
-        {
-          success: false,
-          message: "Username is already registerd",
-        },
-        { status: 400 },
-      );
+      if (existingUserVerifiedByEmail.isVerified) {
+        return Response.json(
+          {
+            success: false,
+            message: "User already exist with this email",
+          },
+          { status: 401 },
+        );
+      } else {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        existingUserVerifiedByEmail.password = hashedPassword;
+        existingUserVerifiedByEmail.verifyCode = verifyCode;
+        existingUserVerifiedByEmail.verifyCodeExpires = new Date(
+          Date.now() + 3600000,
+        );
+        await existingUserVerifiedByEmail.save();
+      }
     } else {
       const hashedPassword = await bcrypt.hash(password, 10);
       const expiryDate = new Date();
@@ -74,7 +84,7 @@ export async function POST(request: Request) {
     return Response.json(
       {
         success: true,
-        messages: "User registerd successfully",
+        messages: "User registerd successfully, Please verify your account",
       },
       {
         status: 201,
