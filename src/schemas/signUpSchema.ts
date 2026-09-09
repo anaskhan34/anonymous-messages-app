@@ -11,7 +11,7 @@ export const usernameValidation = z
 
 export const signupSchema = z
   .object({
-    username: z.string().min(2, "Name must be at least 2 characters"),
+    username: usernameValidation,
 
     email: z.email("Enter a valid email"),
 

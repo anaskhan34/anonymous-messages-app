@@ -1,12 +1,21 @@
 import type { Metadata } from "next";
-import { Inter, Geist } from "next/font/google";
+import { Inter, Roboto } from "next/font/google";
+
 import "./globals.css";
+
 import AuthProvider from "../context/AuthProvider";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/sonner";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+const robotoHeading = Roboto({
+  subsets: ["latin"],
+  variable: "--font-heading",
+});
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
 
 export const metadata: Metadata = {
   title: "True Feedback",
@@ -17,12 +26,18 @@ interface RootLayoutProps {
   children: React.ReactNode;
 }
 
-export default async function RootLayout({ children }: RootLayoutProps) {
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" className={cn("font-sans", geist.variable)}>
-      <AuthProvider>
-        <body className={inter.className}>{children}</body>
-      </AuthProvider>
+    <html
+      lang="en"
+      className={cn("font-sans", inter.variable, robotoHeading.variable)}
+    >
+      <body className={inter.className}>
+        <AuthProvider>
+          {children}
+          <Toaster />
+        </AuthProvider>
+      </body>
     </html>
   );
 }
