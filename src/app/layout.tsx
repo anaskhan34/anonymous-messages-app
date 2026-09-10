@@ -3,9 +3,9 @@ import { Inter, Roboto } from "next/font/google";
 
 import "./globals.css";
 
-import AuthProvider from "../context/AuthProvider";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
+import AuthProvider from "@/context/AuthProvider";
 
 const robotoHeading = Roboto({
   subsets: ["latin"],
@@ -18,7 +18,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "True Feedback",
+  title: "True Feedback || Anonymous",
   description: "Real feedback from real people.",
 };
 
